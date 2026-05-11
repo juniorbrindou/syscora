@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: syscora_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://syscora_user:syscora_pass@db:5432/syscora
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: syscora_web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
+  db:
+    image: postgres:15-alpine
+    container_name: syscora_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: syscora_user
+      POSTGRES_PASSWORD: syscora_pass
+      POSTGRES_DB: syscora
+    volumes:
+      - syscora_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U syscora_user -d syscora"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  syscora_postgres_data:
