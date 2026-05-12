@@ -21,11 +21,13 @@ FROM nginx:alpine
 # Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/*
 
+# Copy custom nginx config (with API proxy)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copy the built app from the builder stage
 COPY --from=builder /app/dist/frontend/browser /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
 
-# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

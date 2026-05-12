@@ -1,0 +1,132 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Tableau de bord</h1>
+      <p class="page-subtitle">Vue d'ensemble de la comptabilité analytique</p>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  @if (kpis()) {
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--charges">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Total Charges</span>
+          <span class="kpi-value kpi-value--danger">{{ kpis()!.total_charges | number:'1.2-2' }} €</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--produits">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Total Produits</span>
+          <span class="kpi-value kpi-value--success">{{ kpis()!.total_produits | number:'1.2-2' }} €</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon" [class.kpi-icon--success]="kpis()!.resultat >= 0" [class.kpi-icon--danger]="kpis()!.resultat < 0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Résultat net</span>
+          <span class="kpi-value" [class.kpi-value--success]="kpis()!.resultat >= 0" [class.kpi-value--danger]="kpis()!.resultat < 0">
+            {{ kpis()!.resultat | number:'1.2-2' }} €
+          </span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--neutral">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Écritures saisies</span>
+          <span class="kpi-value">{{ kpis()!.nb_ecritures }}</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Axes actifs</span>
+          <span class="kpi-value">{{ kpis()!.nb_axes_actifs }}</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Charts -->
+  <div class="charts-row">
+    <div class="chart-card chart-card--wide">
+      <div class="card-header">
+        <h2>Évolution mensuelle</h2>
+        <span class="card-subtitle">Charges vs Produits</span>
+      </div>
+      <div #evolutionChart class="chart-area"></div>
+    </div>
+    <div class="chart-card">
+      <div class="card-header">
+        <h2>Répartition par axe</h2>
+        <span class="card-subtitle">Montants totaux</span>
+      </div>
+      <div #repartitionChart class="chart-area"></div>
+    </div>
+  </div>
+
+  <!-- Recent écritures -->
+  <div class="table-card">
+    <div class="card-header">
+      <h2>Dernières écritures</h2>
+    </div>
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Référence</th>
+            <th>Date</th>
+            <th>Libellé</th>
+            <th>Compte</th>
+            <th>Axe</th>
+            <th class="text-right">Montant</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of recentEcritures(); track e.id) {
+            <tr>
+              <td><code class="mono">{{ e.reference }}</code></td>
+              <td class="text-secondary">{{ e.date_ecriture | date:'dd/MM/yyyy' }}</td>
+              <td>{{ e.libelle }}</td>
+              <td>
+                @if (e.compte) {
+                  <span class="badge badge--neutral">{{ e.compte.code }}</span>
+                }
+              </td>
+              <td>
+                @if (e.axe) {
+                  <span class="badge badge--primary">{{ e.axe.libelle }}</span>
+                }
+              </td>
+              <td class="text-right">
+                <span [class]="e.sens === 'DEBIT' ? 'amount-debit' : 'amount-credit'">
+                  {{ formatMontant(e.montant, e.sens) }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="empty-row">Aucune écriture enregistrée</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

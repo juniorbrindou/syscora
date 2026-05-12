@@ -1,0 +1,142 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Écritures analytiques</h1>
+      <p class="page-subtitle">Saisie et consultation des écritures ventilées</p>
+    </div>
+    <button class="btn-primary" (click)="toggleForm()">
+      @if (showForm()) {
+        Masquer le formulaire
+      } @else {
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+        Nouvelle écriture
+      }
+    </button>
+  </div>
+
+  <!-- Saisie form -->
+  @if (showForm()) {
+    <div class="form-card">
+      <h2 class="form-title">Nouvelle écriture analytique</h2>
+
+      @if (success()) {
+        <div class="alert-success">{{ success() }}</div>
+      }
+      @if (error()) {
+        <div class="alert-error">{{ error() }}</div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="ecriture-form">
+        <div class="form-row">
+          <div class="field-group">
+            <label for="date_ecriture">Date <span class="required">*</span></label>
+            <input id="date_ecriture" type="date" formControlName="date_ecriture" />
+          </div>
+          <div class="field-group field-group--wide">
+            <label for="libelle">Libellé <span class="required">*</span></label>
+            <input id="libelle" type="text" formControlName="libelle" placeholder="Description de l'écriture" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field-group">
+            <label for="montant">Montant <span class="required">*</span></label>
+            <input id="montant" type="number" formControlName="montant" placeholder="0.00" min="0.01" step="0.01" class="text-right" />
+          </div>
+          <div class="field-group">
+            <label for="sens">Sens <span class="required">*</span></label>
+            <select id="sens" formControlName="sens">
+              <option value="DEBIT">Débit (Charge)</option>
+              <option value="CREDIT">Crédit (Produit)</option>
+            </select>
+          </div>
+          <div class="field-group field-group--small">
+            <label for="devise">Devise</label>
+            <input id="devise" type="text" formControlName="devise" placeholder="EUR" maxlength="3" class="uppercase" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field-group">
+            <label for="compte_id">Compte analytique <span class="required">*</span></label>
+            <select id="compte_id" formControlName="compte_id">
+              <option [ngValue]="null" disabled>Sélectionner un compte</option>
+              @for (c of comptes(); track c.id) {
+                <option [value]="c.id">{{ c.code }} — {{ c.libelle }}</option>
+              }
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="axe_id">Axe analytique <span class="required">*</span></label>
+            <select id="axe_id" formControlName="axe_id">
+              <option [ngValue]="null" disabled>Sélectionner un axe</option>
+              @for (a of axes(); track a.id) {
+                <option [value]="a.id">{{ a.code }} — {{ a.libelle }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="toggleForm()">Annuler</button>
+          <button type="submit" class="btn-primary" [disabled]="form.invalid || submitting()">
+            {{ submitting() ? 'Enregistrement…' : 'Valider l\'écriture' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <!-- Table -->
+  <div class="table-card">
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Référence</th>
+            <th>Date</th>
+            <th>Libellé</th>
+            <th>Sens</th>
+            <th>Compte</th>
+            <th>Axe</th>
+            <th class="text-right">Montant (€)</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of ecritures(); track e.id) {
+            <tr>
+              <td><code class="mono">{{ e.reference }}</code></td>
+              <td class="text-secondary">{{ e.date_ecriture | date:'dd/MM/yyyy' }}</td>
+              <td class="libelle">{{ e.libelle }}</td>
+              <td>
+                <span class="badge" [ngClass]="sensBadge(e.sens)">{{ e.sens }}</span>
+              </td>
+              <td>
+                @if (e.compte) {
+                  <span class="compte-info">
+                    <code class="mono">{{ e.compte.code }}</code>
+                    <span class="compte-libelle">{{ e.compte.libelle }}</span>
+                  </span>
+                }
+              </td>
+              <td>
+                @if (e.axe) {
+                  <span class="badge badge--primary">{{ e.axe.libelle }}</span>
+                }
+              </td>
+              <td class="text-right">
+                <span [class]="e.sens === 'DEBIT' ? 'amount-debit' : 'amount-credit'">
+                  {{ formatMontant(e.montant, e.sens) }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="empty-row">Aucune écriture enregistrée. Commencez par créer une écriture.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

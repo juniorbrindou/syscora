@@ -1,0 +1,102 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Axes analytiques</h1>
+      <p class="page-subtitle">Centres de coûts, projets et départements</p>
+    </div>
+    <button class="btn-primary" (click)="openCreate()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+      Nouvel axe
+    </button>
+  </div>
+
+  <div class="table-card">
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Libellé</th>
+            <th>Type</th>
+            <th>Statut</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (a of axes(); track a.id) {
+            <tr>
+              <td><code class="mono">{{ a.code }}</code></td>
+              <td class="libelle">{{ a.libelle }}</td>
+              <td><span class="badge" [ngClass]="typeBadgeClass(a.type)">{{ typeLabel(a.type) }}</span></td>
+              <td>
+                @if (a.is_active) {
+                  <span class="status-dot status-dot--active">Actif</span>
+                } @else {
+                  <span class="status-dot status-dot--inactive">Inactif</span>
+                }
+              </td>
+              <td class="text-right">
+                <div class="action-group">
+                  <button class="btn-ghost" (click)="openEdit(a)" title="Modifier">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                  </button>
+                  <button class="btn-ghost btn-ghost--warn" (click)="toggleActive(a)" [title]="a.is_active ? 'Désactiver' : 'Activer'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" x2="12" y1="2" y2="12"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="empty-row">Aucun axe analytique créé</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+@if (showModal()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editId() ? 'Modifier l\'axe' : 'Nouvel axe analytique' }}</h2>
+        <button class="modal-close" (click)="closeModal()" title="Fermer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+        </button>
+      </div>
+
+      @if (error()) {
+        <div class="alert-error">{{ error() }}</div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="modal-form">
+        <div class="field-group">
+          <label>Code <span class="required">*</span></label>
+          <input type="text" formControlName="code" placeholder="ex: CC-IT" />
+        </div>
+        <div class="field-group">
+          <label>Libellé <span class="required">*</span></label>
+          <input type="text" formControlName="libelle" placeholder="ex: Centre IT & Infrastructure" />
+        </div>
+        <div class="field-group">
+          <label for="axe-type">Type <span class="required">*</span></label>
+          <select id="axe-type" formControlName="type">
+            @for (opt of typeOptions; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeModal()">Annuler</button>
+          <button type="submit" class="btn-primary" [disabled]="form.invalid || submitting()">
+            {{ submitting() ? 'Enregistrement…' : (editId() ? 'Mettre à jour' : 'Créer') }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

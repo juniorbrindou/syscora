@@ -1,0 +1,147 @@
+.page {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.page-subtitle { margin-top: 4px; color: #6b7280; }
+
+/* ── Saisie form card ─────────────────────────────────────────────────────── */
+.form-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.04);
+}
+
+.form-title {
+  margin-bottom: 20px;
+}
+
+.ecriture-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 160px;
+}
+
+.field-group--wide { flex: 2; }
+.field-group--small { flex: 0 0 90px; min-width: 90px; }
+
+.field-group label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.required { color: #ef4444; }
+
+.field-group input,
+.field-group select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+}
+
+.text-right { text-align: right; }
+.uppercase { text-transform: uppercase; }
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  border-top: 1px solid #f3f4f6;
+  padding-top: 16px;
+  margin-top: 4px;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.btn-primary { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: #6366f1; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: background 0.15s; }
+.btn-primary:hover:not(:disabled) { background: #4f46e5; }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-secondary { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: #fff; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; font-weight: 500; font-family: inherit; cursor: pointer; transition: background 0.12s; }
+.btn-secondary:hover { background: #f9fafb; }
+
+/* ── Alerts ──────────────────────────────────────────────────────────────── */
+.alert-success { padding: 10px 14px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; color: #15803d; font-size: 13px; margin-bottom: 16px; }
+.alert-error   { padding: 10px 14px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; color: #dc2626; font-size: 13px; margin-bottom: 16px; }
+
+/* ── Table ───────────────────────────────────────────────────────────────── */
+.table-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.04); }
+.table-wrapper { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; }
+
+.data-table th {
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #9ca3af;
+  background: #fafafa;
+  border-bottom: 1px solid #f3f4f6;
+  text-align: left;
+}
+
+.data-table td {
+  padding: 10px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid #f9fafb;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover td { background: #f9fafb; }
+
+.text-right { text-align: right !important; }
+.text-secondary { color: #6b7280; }
+.libelle { font-weight: 500; color: #111827; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mono { font-family: 'Roboto Mono', monospace; font-size: 12px; color: #6b7280; }
+
+.badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge--danger  { background: #fef2f2; color: #ef4444; }
+.badge--success { background: #f0fdf4; color: #10b981; }
+.badge--primary { background: #eef2ff; color: #6366f1; }
+
+.compte-info { display: flex; align-items: center; gap: 6px; }
+.compte-libelle { color: #6b7280; font-size: 12px; }
+
+.amount-debit  { color: #ef4444; font-weight: 600; font-family: 'Roboto Mono', monospace; }
+.amount-credit { color: #10b981; font-weight: 600; font-family: 'Roboto Mono', monospace; }
+
+.empty-row { text-align: center; color: #9ca3af; padding: 48px 16px !important; font-size: 13px; }

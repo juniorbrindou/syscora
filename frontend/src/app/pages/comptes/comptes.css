@@ -1,0 +1,279 @@
+/* Shared page/table/modal styles — used across comptes, axes, ecritures */
+.page {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.page-subtitle { margin-top: 4px; color: #6b7280; }
+
+/* ── Table card ───────────────────────────────────────────────────────────── */
+.table-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.04);
+}
+
+.table-wrapper { overflow-x: auto; }
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #9ca3af;
+  background: #fafafa;
+  border-bottom: 1px solid #f3f4f6;
+  text-align: left;
+}
+
+.data-table td {
+  padding: 10px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid #f9fafb;
+  color: #374151;
+}
+
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover td { background: #f9fafb; }
+
+.text-right { text-align: right !important; }
+
+.libelle { font-weight: 500; color: #111827; }
+
+.mono {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ── Badges ───────────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge--danger   { background: #fef2f2; color: #ef4444; }
+.badge--success  { background: #f0fdf4; color: #10b981; }
+.badge--neutral  { background: #f3f4f6; color: #6b7280; }
+.badge--primary  { background: #eef2ff; color: #6366f1; }
+.badge--warning  { background: #fffbeb; color: #d97706; }
+
+/* ── Status dots ──────────────────────────────────────────────────────────── */
+.status-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-dot::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status-dot--active::before  { background: #10b981; }
+.status-dot--inactive::before { background: #d1d5db; }
+.status-dot--active  { color: #374151; }
+.status-dot--inactive { color: #9ca3af; }
+
+/* ── Action buttons ───────────────────────────────────────────────────────── */
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.btn-ghost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.btn-ghost:hover { background: #f3f4f6; color: #374151; }
+.btn-ghost--warn:hover { background: #fef2f2; color: #ef4444; }
+
+/* ── Primary / Secondary buttons ─────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-primary:hover:not(:disabled) { background: #4f46e5; }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #fff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.btn-secondary:hover { background: #f9fafb; }
+
+/* ── Empty row ────────────────────────────────────────────────────────────── */
+.empty-row {
+  text-align: center;
+  color: #9ca3af;
+  padding: 48px 16px !important;
+  font-size: 13px;
+}
+
+/* ── Modal ────────────────────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 20px 60px -10px rgba(0,0,0,0.25);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.modal-header h2 { font-size: 16px; }
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.modal-close:hover { background: #f3f4f6; color: #374151; }
+
+.modal-form {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field-group label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.required { color: #ef4444; }
+
+.field-group input,
+.field-group select,
+.field-group textarea {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.field-group input:focus,
+.field-group select:focus,
+.field-group textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+}
+
+.field-group textarea { resize: vertical; min-height: 72px; }
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+/* ── Alert ────────────────────────────────────────────────────────────────── */
+.alert-error {
+  margin: 0 24px;
+  padding: 10px 14px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #dc2626;
+  font-size: 13px;
+}

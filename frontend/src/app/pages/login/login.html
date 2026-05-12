@@ -1,0 +1,80 @@
+<div class="login-page">
+  <div class="login-left">
+    <div class="login-brand">
+      <div class="brand-icon">S</div>
+      <span class="brand-name">Syscora</span>
+    </div>
+    <div class="login-tagline">
+      <h1>La comptabilité analytique<br><span>réinventée.</span></h1>
+      <p>Une vision claire, ventilée et en temps réel de vos performances financières.</p>
+    </div>
+    <div class="login-features">
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <span>Ventilation analytique multi-axes</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <span>Tableaux de bord temps réel</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <span>Piste d'audit immuable</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="login-card">
+      <h2>Connexion</h2>
+      <p class="login-subtitle">Accédez à votre espace comptable</p>
+
+      @if (error()) {
+        <div class="alert-error">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+          {{ error() }}
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form" autocomplete="on">
+        <div class="field-group">
+          <label for="email">Adresse email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="vous@entreprise.com"
+            autocomplete="email"
+          />
+          @if (form.get('email')?.invalid && form.get('email')?.touched) {
+            <span class="field-error">Email invalide</span>
+          }
+        </div>
+
+        <div class="field-group">
+          <label for="password">Mot de passe</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="loading() || form.invalid">
+          @if (loading()) {
+            <span class="spinner"></span>
+            Connexion en cours…
+          } @else {
+            Se connecter
+          }
+        </button>
+      </form>
+
+      <p class="login-hint">
+        Compte démo : <code>admin&#64;syscora.com</code> / <code>Admin&#64;2024</code>
+      </p>
+    </div>
+  </div>
+</div>
